@@ -5,6 +5,7 @@ class BlueHornetAPI(object):
     def __init__(self, api_key, api_secret):
         self.api_key = api_key
         self.api_secret = api_secret
+        self.last_request = None
 
     def method_call(self, method_calls):
         api_dict = {
@@ -17,6 +18,7 @@ class BlueHornetAPI(object):
             },
         }
         request_xml = xon.dumps(api_dict)
+        self.last_request = request_xml
         params = urllib.urlencode({'data': request_xml,})
         headers = {"Content-type": "application/x-www-form-urlencoded",
                 "Accept": "text/plain"}
@@ -39,7 +41,7 @@ class BlueHornetAPI(object):
                   fail_silently=False):
         pass
 
-    def add_subscriber(self, email, **kwargs):
+    def set_subscriber(self, email, **kwargs):
         method_call = self.get_method_dict('legacy.manage_subscriber',
                                            email=email,
                                            **kwargs)
